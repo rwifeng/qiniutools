@@ -8,13 +8,12 @@ mkr=''
 #Usage: qboxrsctl listprefix <bucket> <prefix> [<limit>] [<marker>]
 IFS=$'\n'
 while true; do
-	fns=$(qrsctl listprefix $bucket "" $limit $mkr)
+	fns=$(qboxrsctl listprefix $bucket "" $limit $mkr)
 	for fn in $fns
 	do
 		if [[ $fn == marker:* ]];then
 			mkr=$(sed 's/marker:[ \t]*//' <<<$fn) 
 		else
-			echo "http://127.0.0.1:51234/get?key=$fn"
 			curl -v "http://127.0.0.1:51234/get?key=$fn" >> backup.log 2>&1
 			if [[ $? != 0 ]];then
 				echo "ERR===>$fn" 
