@@ -2,7 +2,7 @@
 
 bucket="rwxf"
 prefix=""
-limit=10
+limit=800
 mkr=''
 
 #Usage: qboxrsctl listprefix <bucket> <prefix> [<limit>] [<marker>]
