@@ -1,16 +1,16 @@
 package main
 
 import (
-	"changelog"
 	"crypto/md5"
 	"encoding/base64"
 	"errors"
+	"fetch/changelog"
+	"fetch/namediff"
 	"flag"
 	"fmt"
 	"github.com/qiniu/api/auth/digest"
 	"github.com/qiniu/api/rs"
 	"github.com/qiniu/log"
-	"namediff"
 	"net/url"
 	"qbox.us/cc"
 	"qbox.us/cc/config"

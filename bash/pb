@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+function usage {
+	echo "
+		Usage:
+			pb <Bucket_or_BindedDomain> <Top-level_Domain>
+		Example:
+			pb testbucket qiniucdn
+			pb testbucket.qiniudn.com qiniug
+	"	
+	exit 1
+}
+
+if [ "$#" -eq 0 ]; then
+	usage
+fi
+
+[[ $2 = "" ]] && tld="qiniucdn" || tld="$2"
+bucket=$(echo $1 | cut -d'.' -f 1)
+uid=$(qboxadmin pub/query rwxf.qiniudn.com | grep -oE "Uid: \d+" | grep -oE "\d+")
+email=$(qboxadmin uid/query $uid | jq .email | tr -d "\"")
+domain=$bucket.$tld.com
+
+echo "qboxadmin rs/publish $email $domain $bucket"
+qboxadmin rs/publish $email $domain $bucket
+
+if [[ $? = 0 ]]; then
+	echo "====> success"
+else
+	echo "====> failed"
+fi
+
+

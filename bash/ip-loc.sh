@@ -22,8 +22,9 @@ process () {
 	if [[ ${ip} == "" ]]; then
 		echo "$line"
 	else
-		iparr=(`echo $ip`)
+		iparr=$(tr ' ' '\n' <<< "${ip[@]}" | sort -u | tr '\n' ' ')
 		for i in "${iparr[@]}"; do
+			echo "=====>>"$i
 			ip_loc="$i["$(iploc "$i")"]"
 			line=$(sed s/"$i"/"$ip_loc"/g <<< "$line")
 		done
