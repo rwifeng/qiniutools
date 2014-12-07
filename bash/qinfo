@@ -2,10 +2,10 @@
 function usage {
 	echo "
 		Usage:
-			info <Bucket_or_BindedDomain>
+			qinfo <Bucket_or_BindedDomain>
 		Example:
-			info testbucket 
-			pb testbucket.qiniudn.com 
+			qinfo testbucket 
+			qinfo testbucket.qiniudn.com 
 	"	
 	exit 1
 }
