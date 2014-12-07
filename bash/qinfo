@@ -1,0 +1,41 @@
+#!/bin/zsh
+function usage {
+	echo "
+		Usage:
+			info <Bucket_or_BindedDomain>
+		Example:
+			info testbucket 
+			pb testbucket.qiniudn.com 
+	"	
+	exit 1
+}
+
+if [ "$#" -eq 0 ]; then
+	usage
+fi
+
+bucket=$(cut -d'.' -f 1 <<< $1)
+domain="$bucket.qiniudn.com"
+
+echo "----------------------domain---------------------------------"
+domainInfo="$(qboxadmin pub/query $domain)"
+echo $domainInfo
+
+echo "\n\n----------------------UserInfo-------------------------------"
+uid=$(echo $domainInfo | grep -oE "Uid: \d+" | grep -oE "\d+")
+userInfo="$(qboxadmin uid/query $uid | jq . )"
+echo $userInfo
+
+echo "\n\n----------------------BucketInfo-----------------------------"
+email=$(qboxadmin uid/query $uid | jq .email | tr -d "\"")
+qboxadmin su $email
+qrsctl bucketinfo $bucket
+
+echo "\n\n----------------------Buckets--------------------------------"
+qrsctl buckets
+
+echo "\n\n----------------------PipelineInfo---------------------------"
+qboxadmin lspipeline $uid
+
+qboxadmin su rwifeng@126.com
+
