@@ -17,9 +17,10 @@ fi
 
 [[ $2 = "" ]] && tld="qiniucdn" || tld="$2"
 bucket=$(echo $1 | cut -d'.' -f 1)
-uid=$(qboxadmin pub/query rwxf.qiniudn.com | grep -oE "Uid: \d+" | grep -oE "\d+")
+domain="$bucket.$tld.com"
+[[ $1 = "$bucket" ]] && bindedDomain="$bucket.qiniudn.com" || bindedDomain="$1"
+uid=$(qboxadmin pub/query "$bindedDomain" | grep -oE "Uid: \d+" | grep -oE "\d+")
 email=$(qboxadmin uid/query $uid | jq .email | tr -d "\"")
-domain=$bucket.$tld.com
 
 echo "qboxadmin rs/publish $email $domain $bucket"
 qboxadmin rs/publish $email $domain $bucket
