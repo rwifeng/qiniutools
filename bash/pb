@@ -23,7 +23,7 @@ uid=$(qboxadmin pub/query "$bindedDomain" | grep -oE "Uid: \d+" | grep -oE "\d+"
 email=$(qboxadmin uid/query $uid | jq .email | tr -d "\"")
 
 echo "qboxadmin rs/publish $email $domain $bucket"
-qboxadmin rs/publish $email $domain $bucket
+qboxadmin rs/publish "$email" "$domain" "$bucket"
 
 if [[ $? = 0 ]]; then
 	echo "====> success"
